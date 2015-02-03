@@ -10,7 +10,7 @@ DIST_DIR ?="./dist"
 DEPS_DIR ?="./deps"
 RUN := erl -pa ebin -pa deps/*/ebin -smp enable -boot start_sasl -config ${CONFIG} ${ERL_ARGS}
 
-package: all	
+package: all
 	rm -rf $(DIST_DIR)
 	mkdir -p $(DIST_DIR)/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/ebin
 	mkdir -p $(DIST_DIR)/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/include
@@ -19,13 +19,12 @@ package: all
 
 get_deps:
 	${REBAR} get-deps
-	echo "{erl_opts, [ warnings_as_errors, warn_export_all, nowarn_deprecated_function ]}." > ./deps/cowboy/rebar.config
 
 all:    get_deps
 	${REBAR} compile {nowarn_deprecated_function}
 
 quick:
-	${REBAR} skip_deps=true compile 
+	${REBAR} skip_deps=true compile
 
 clean:
 	${REBAR} clean
@@ -44,15 +43,14 @@ cowboy: all
 	cp ./$(DEPS_DIR)/cowboy/ebin/* $(DIST_DIR)/cowboy-$(COWBOY_VERSION)/ebin
 	cd $(DIST_DIR) && zip -q -r ./cowboy-$(COWBOY_VERSION).ez ./cowboy-$(COWBOY_VERSION)
 
-cowlib: 
+cowlib:
 	mkdir -p $(DIST_DIR)/cowlib-$(COWLIB_VERSION)/ebin
 	mkdir -p $(DIST_DIR)/cowlib-$(COWLIB_VERSION)/include
 	cp ./$(DEPS_DIR)/cowlib/ebin/* $(DIST_DIR)/cowlib-$(COWLIB_VERSION)/ebin
 	cd $(DIST_DIR) && zip -q -r ./cowlib-$(COWLIB_VERSION).ez ./cowlib-$(COWLIB_VERSION)
 
-ranch: 
+ranch:
 	mkdir -p $(DIST_DIR)/ranch-$(RANCH_VERSION)/ebin
 	mkdir -p $(DIST_DIR)/ranch-$(RANCH_VERSION)/include
 	cp ./$(DEPS_DIR)/ranch/ebin/* $(DIST_DIR)/ranch-$(RANCH_VERSION)/ebin
 	cd $(DIST_DIR) && zip -q -r ./ranch-$(RANCH_VERSION).ez ./ranch-$(RANCH_VERSION)
-

@@ -24,8 +24,7 @@ start_link() ->
     gen_server:start_link({global, ?MODULE}, ?MODULE, [], []).
 
 init([]) ->
-    {ok, Connection} = amqp_connection:start(#amqp_params_direct{}),
-    %{ok, Connection} = amqp_connection:start(#amqp_params_network{}),
+    {ok, Connection} = amqp_connection:start(#amqp_params_network{}),
     {ok, Channel} = amqp_connection:open_channel(Connection),
     amqp_channel:call(Channel, #'exchange.declare'{exchange = list_to_binary(?EXCHANGE_NAME),
                                                    type = <<"direct">>}),
